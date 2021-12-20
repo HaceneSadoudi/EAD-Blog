@@ -21,3 +21,29 @@ function connecter() {
     exit($msg);
     
 }
+
+/**
+ * Manage database query errors
+ * 
+ * @parm object $db     Connection to database
+ * @parm string $S      SQL query origin of the error
+ */
+function db_error($db, $S) {
+    $errNo = mysqli_errno($db);
+    $errMsg = mysqli_error($db);
+
+    echo '<h2> DataBase Error <h2>',
+         'Mysql Error : ', $errNo, ' - ', $errMsg,
+         '<br>Query : <pre>', $S, '</pre>',
+         '<h3>Stack of functions call</h3>';
+
+    $calls = debug_backtrace();
+
+    for($i=0, $iMax = count($calls);$i<$iMax;$i++) {
+        echo $calls[$i]['function'], ' - ',
+             $calls[$i]['line'], ' - ',
+             $calls[$i]['file'], '<br>';
+    }
+
+    exit(); // End of the script
+}
