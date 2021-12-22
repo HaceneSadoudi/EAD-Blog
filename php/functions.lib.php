@@ -67,3 +67,31 @@ function proteger_sortie($content) {
         return htmlentities($content, ENT_QUOTES);
     }
 }
+
+
+/**
+ * Protect entries (strings) sended to MySQL Server
+ * 
+ * @param object $con       database connexion
+ * @param mixed  $content   An array or string to protect
+ * @return mixed            protected string or array 
+ */
+function proteger_entree($con, $content) {
+    if(is_array($content)) {
+        foreach($content as &$value) {
+            $value = proteger_entree($con, $value);
+        }
+        unset($value);
+        return $content;
+    }
+    if(is_string($content)) {
+        if(function_exists('mysqli_real_escape_string')) {
+            return mysqli_real_escape_string($con, $content);
+        }
+        if(function_exists('mysqli_escape_string')) {
+            return mysqli_escape_string($con, $content);
+        }
+        return addslashes($content);
+    }
+    return $content;
+}
