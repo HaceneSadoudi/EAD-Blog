@@ -95,3 +95,16 @@ function proteger_entree($con, $content) {
     }
     return $content;
 }
+
+
+
+/**
+ * Check if a given value is a number or not
+ * 
+ * @param mixed $x      a given value
+ * @return boolean      TRUE if integer, FALSE else.
+ */
+function estEntier($x) {
+    return is_numeric($x) && ($x == (int) $x);
+}
+
