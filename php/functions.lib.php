@@ -47,3 +47,23 @@ function db_error($db, $S) {
 
     exit(); // End of the script
 }
+
+
+/**
+ * Protect the output (Generated html code for the user)
+ * 
+ * @param  mixed $content    An array or a string to be protected
+ * @return mixed             The protected string or array
+ */
+function proteger_sortie($content) {
+    if(is_array($content)) {
+        foreach($content as &$value) {
+            $value = proteger_sortie($value);
+        }
+        unset($value);
+        return $content;
+    }
+    if(is_string($content)) {
+        return htmlentities($content, ENT_QUOTES);
+    }
+}
